@@ -1,0 +1,11 @@
+{% load static %}
+{% include "header.html" %}
+
+<h2>🔖 Your Saved Posts</h2>
+{% for post in posts %}
+  <div>
+    <p>{{ post.content }}</p>
+  </div>
+{% empty %}
+  <p>No saved posts.</p>
+{% endfor %}

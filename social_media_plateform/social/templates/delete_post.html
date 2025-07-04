@@ -1,0 +1,5 @@
+{% if user == post.user %}
+  <a href="{% url 'edit_post' post.id %}">✏️ Edit</a>
+  |
+  <a href="{% url 'delete_post' post.id %}">🗑️ Delete</a>
+{% endif %}

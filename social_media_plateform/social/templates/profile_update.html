@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | SocialVibe</title>
+    <style>
+        /* Instagram-inspired Design System */
+        :root {
+            --gradient-primary: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            --glass-light: rgba(255, 255, 255, 0.95);
+            --glass-dark: rgba(26, 26, 46, 0.95);
+            --border-light: rgba(255, 255, 255, 0.2);
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --text-primary: #262626;
+            --text-secondary: #8e8e8e;
+            --shadow-light: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark-mode {
+            --text-primary: #f5f5f5;
+            --text-secondary: #a8a8a8;
+            --border-light: #363636;
+            --border-dark: #484848;
+            --glass-light: rgba(38, 38, 38, 0.9);
+            --glass-dark: rgba(18, 18, 18, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--glass-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+            padding-top: 60px;
+            min-height: 100vh;
+        }
+
+        .dark-mode body {
+            background: var(--glass-dark);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass-light);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 1000;
+            padding: 12px 0;
+            transition: var(--transition);
+        }
+
+        .dark-mode .header {
+            background: var(--glass-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .header-content {
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* Profile Update Container */
+        .profile-update-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 0 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Profile Header */
+        .profile-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-light);
+            text-align: center;
+        }
+
+        .profile-title {
+            font-size: 24px;
+            font-weight: 600;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Profile Form */
+        .profile-form {
+            background: var(--glass-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+        }
+
+        .dark-mode .profile-form {
+            background: var(--glass-dark);
+            border: 1px solid var(--border-dark);
+        }
+
+        .profile-form:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .form-input,
+        .dark-mode .form-textarea,
+        .dark-mode .form-select {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #f09433;
+            box-shadow: 0 0 0 3px rgba(240, 148, 51, 0.2);
+        }
+
+        /* File Upload Styling */
+        .file-input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .file-input-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            border: 2px dashed var(--border-light);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .file-input-label:hover {
+            border-color: #f09433;
+            background: rgba(240, 148, 51, 0.05);
+        }
+
+        .file-input-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .file-input-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+
+        /* Current Avatar */
+        .current-avatar {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .current-avatar-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .current-avatar img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+        }
+
+        .current-avatar img:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(240, 148, 51, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 148, 51, 0.4);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Form Errors */
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0;
+            color: #ff4d4d;
+            font-size: 14px;
+        }
+
+        .helptext {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: block;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(30deg);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-update-container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            
+            .profile-form {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-form {
+                padding: 20px;
+                border-radius: 18px;
+            }
+            
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: 12px 15px;
+            }
+            
+            .file-input-label {
+                padding: 30px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    
+    <!-- Header -->
+    {% include "header.html" %}
+    
+    <!-- Profile Update Container -->
+    <div class="profile-update-container">
+        <div class="profile-header">
+            <h1 class="profile-title">Edit Profile</h1>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+            
+            <!-- Profile Picture Upload -->
+            <div class="form-group">
+                <label class="form-label">Profile Picture</label>
+                <div class="file-input-container">
+                    <label class="file-input-label">
+                        <div class="file-input-icon">📷</div>
+                        <div>Click to upload photo</div>
+                        <div class="file-input-text">or drag and drop</div>
+                    </label>
+                    <input type="file" id="id_profile_picture" name="profile_picture" class="file-input" accept="image/*">
+                </div>
+                
+                {% if form.instance.profile_picture %}
+                    <div class="current-avatar">
+                        <span class="current-avatar-label">Current Profile Photo:</span>
+                        <img src="{{ form.instance.profile_picture.url }}" alt="Current profile picture">
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Other Form Fields -->
+            {% for field in form %}
+                {% if field.name != 'profile_picture' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        
+                        {% if field.field.widget.input_type == 'select' %}
+                            <select id="{{ field.id_for_label }}" name="{{ field.name }}" class="form-select">
+                                {% for choice in field.field.choices %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        {% elif field.field.widget.input_type == 'textarea' %}
+                            <textarea id="{{ field.id_for_label }}" name="{{ field.name }}" class="form-textarea">{{ field.value|default_if_none:'' }}</textarea>
+                        {% else %}
+                            <input type="{{ field.field.widget.input_type }}" 
+                                   id="{{ field.id_for_label }}" 
+                                   name="{{ field.name }}" 
+                                   class="form-input" 
+                                   value="{{ field.value|default_if_none:'' }}"
+                                   {% if field.field.required %}required{% endif %}>
+                        {% endif %}
+                        
+                        {% if field.help_text %}
+                            <span class="helptext">{{ field.help_text }}</span>
+                        {% endif %}
+                        
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+            <button type="submit" class="submit-btn">Save Changes</button>
+        </form>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        🌓
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
+            
+            // Animate the toggle button
+            const toggleBtn = document.querySelector('.dark-mode-toggle');
+            toggleBtn.style.transform = 'scale(1.2) rotate(180deg)';
+            setTimeout(() => {
+                toggleBtn.style.transform = '';
+            }, 300);
+        }
+
+        // Initialize dark mode
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+
+        // Image Preview Functionality
+        const fileInput = document.getElementById('id_profile_picture');
+        const fileInputLabel = document.querySelector('.file-input-label');
+        
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    // Update the preview
+                    let preview = document.querySelector('.current-avatar');
+                    if (!preview) {
+                        preview = document.createElement('div');
+                        preview.className = 'current-avatar';
+                        preview.innerHTML = `
+                            <span class="current-avatar-label">New Photo Preview:</span>
+                            <img src="${event.target.result}" alt="Preview">
+                        `;
+                        fileInputLabel.parentNode.insertAdjacentElement('afterend', preview);
+                    } else {
+                        preview.querySelector('img').src = event.target.result;
+                        preview.querySelector('.current-avatar-label').textContent = 'New Photo Preview:';
+                    }
+                    
+                    // Update the file input label
+                    fileInputLabel.querySelector('div:not(.file-input-text)').textContent = file.name;
+                    fileInputLabel.querySelector('.file-input-icon').textContent = '🖼️';
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Add smooth transitions after page load
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(() => {
+                document.body.style.transition = "var(--transition)";
+            }, 100);
+        });
+    </script>
+</body>
+</html>

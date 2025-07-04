@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: mincream;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background:  linear-gradient(45deg, #f09433, #bc1888);
+
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .results-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .results-list li {
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .results-list li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .results-list a {
+            display: block;
+            padding: 20px 25px;
+            background: #f8f9fa;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            border-left: 4px solid #74b9ff;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .results-list a:hover {
+            background: #74b9ff;
+            color: white;
+            border-left-color: #0984e3;
+        }
+
+        .results-list a::before {
+            content: "👤";
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            opacity: 0.6;
+        }
+
+        .results-list a:hover::before {
+            opacity: 1;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .no-results-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .no-results p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 15px 25px;
+            background:  linear-gradient(45deg, #f09433, #bc1888);
+
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #00a085, #00b7b3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.4);
+        }
+
+        .back-button:active {
+            transform: translateY(0);
+        }
+
+        .back-arrow {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover .back-arrow {
+            transform: translateX(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h2 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .results-list a {
+                padding: 15px 20px;
+                font-size: 16px;
+            }
+            
+            .back-button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Animation for results */
+        .results-list li {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .results-list li:nth-child(1) { animation-delay: 0.1s; }
+        .results-list li:nth-child(2) { animation-delay: 0.2s; }
+        .results-list li:nth-child(3) { animation-delay: 0.3s; }
+        .results-list li:nth-child(4) { animation-delay: 0.4s; }
+        .results-list li:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Search Results for "{{ query }}"</h2>
+            <p>Found matching users</p>
+        </div>
+        
+        <div class="content">
+            {% if results %}
+                <ul class="results-list">
+                    {% for user in results %}
+                        <li>
+                            <a href="{% url 'profile' user.username %}">{{ user.username }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="no-results">
+                    <div class="no-results-icon">🔍</div>
+                    <h3>No users found</h3>
+                    <p>Try searching with different keywords or check your spelling.</p>
+                </div>
+            {% endif %}
+            
+            <a href="{% url 'post_list' %}" class="back-button">
+                <span class="back-arrow">←</span>
+                Back to Posts
+            </a>
+        </div>
+    </div>
+</body>
+</html>

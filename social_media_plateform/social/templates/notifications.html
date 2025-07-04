@@ -1,0 +1,11 @@
+<h2>Your Notifications</h2>
+<ul>
+  {% for noti in notifications %}
+    <li>
+      <strong>{{ noti.from_user.username }}</strong>: {{ noti.message }} <br>
+      <small>{{ noti.created_at|timesince }} ago</small>
+    </li>
+  {% empty %}
+    <li>No notifications yet.</li>
+  {% endfor %}
+</ul>

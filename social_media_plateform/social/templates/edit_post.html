@@ -1,0 +1,349 @@
+<head>
+    <style>
+      /* CSS Variables for Theme Management */
+      :root {
+        --primary-color: #0095f6;
+        --primary-hover: #0077cc;
+        --heart-color: #ed4956;
+        --background: #fafafa;
+        --card-background: #ffffff;
+        --text-primary: #262626;
+        --text-secondary: #8e8e8e;
+        --border-color: #dbdbdb;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+        --border-radius: 12px;
+        --border-radius-small: 8px;
+        --transition: all 0.2s ease;
+      }
+
+      /* Dark Mode Variables */
+      .dark-mode {
+        --background: #000000;
+        --card-background: #262626;
+        --text-primary: #ffffff;
+        --text-secondary: #a8a8a8;
+        --border-color: #363636;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.6);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background: var(--background);
+        color: var(--text-primary);
+        line-height: 1.5;
+        transition: var(--transition);
+      }
+
+      /* Header - Instagram Style */
+      .header {
+        background: var(--card-background);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: var(--shadow);
+      }
+
+      .header-content {
+        max-width: 975px;
+        margin: 0 auto;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-decoration: none;
+        font-family: 'Segoe UI', sans-serif;
+      }
+
+      /* Edit Page Container */
+      .edit-container {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 0 16px;
+      }
+
+      .edit-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      .edit-title {
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .back-btn {
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* Edit Form */
+      .edit-form {
+        background: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .form-input,
+      .form-textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-small);
+        background: var(--background);
+        color: var(--text-primary);
+        font-size: 14px;
+        transition: var(--transition);
+      }
+
+      .form-textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .form-input:focus,
+      .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(0, 149, 246, 0.1);
+      }
+
+      /* File Input Styling */
+      .file-input-container {
+        position: relative;
+        margin-bottom: 16px;
+      }
+
+      .file-input-label {
+        display: block;
+        padding: 40px 20px;
+        border: 2px dashed var(--border-color);
+        border-radius: var(--border-radius);
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .file-input-label:hover {
+        border-color: var(--primary-color);
+      }
+
+      .file-input-text {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-top: 8px;
+      }
+
+      .file-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      /* Current Image Preview */
+      .current-image {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .current-image-label {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .current-image img {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: var(--border-radius-small);
+        border: 1px solid var(--border-color);
+      }
+
+      /* Submit Button */
+      .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(45deg, #f09433, #bc1888);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-small);
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 16px;
+      }
+
+      .submit-btn:hover {
+        background: var(--primary-hover);
+      }
+
+      /* Dark mode toggle */
+      .dark-mode-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--card-background);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+        box-shadow: var(--shadow-hover);
+        z-index: 1000;
+        transition: var(--transition);
+      }
+
+      .dark-mode-toggle:hover {
+        transform: scale(1.1);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .edit-container {
+          margin: 20px auto;
+          padding: 0 12px;
+        }
+
+        .edit-form {
+          padding: 20px;
+        }
+      }
+    </style>
+</head>
+<body>
+    {% load static %}
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Instagram</a>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</button>
+        </div>
+    </header>
+
+    <!-- Edit Form Container -->
+    <div class="edit-container">
+        <div class="edit-header">
+            <h1 class="edit-title">Edit Post</h1>
+            <button class="back-btn" onclick="window.history.back()">
+                ← Back
+            </button>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" class="edit-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_content" class="form-label">Caption</label>
+                <textarea id="id_content" name="content" class="form-textarea">{{ form.instance.content }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Image</label>
+                <div class="file-input-container">
+                    <label for="id_image" class="file-input-label">
+                        <div>📷 Click to change image</div>
+                        <div class="file-input-text">or drag and drop</div>
+                    </label>
+                    <input type="file" id="id_image" name="image" class="file-input" accept="image/*">
+                </div>
+                
+                {% if form.instance.image %}
+                    <div class="current-image">
+                        <span class="current-image-label">Current Image:</span>
+                        <img src="{{ form.instance.image.url }}" alt="Current post image">
+                    </div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="submit-btn">Save Changes</button>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
+        }
+
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+
+        // Preview image when selected
+        document.getElementById('id_image').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    const preview = document.querySelector('.current-image');
+                    if (!preview) {
+                        const container = document.querySelector('.form-group:last-child');
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'current-image';
+                        previewDiv.innerHTML = `
+                            <span class="current-image-label">New Image Preview:</span>
+                            <img src="${event.target.result}" alt="Preview" style="max-width:100%">
+                        `;
+                        container.appendChild(previewDiv);
+                    } else {
+                        preview.querySelector('img').src = event.target.result;
+                        preview.querySelector('.current-image-label').textContent = 'New Image Preview:';
+                    }
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>

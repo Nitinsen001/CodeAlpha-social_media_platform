@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Feed</title>
+    <style>
+        /* CSS Variables for Theme Management */
+        :root {
+            --primary-color: #405de6;
+            --primary-dark: #3b4de6;
+            --primary-light: #e1306c;
+            --secondary-color: #fd5949;
+            --accent-color: #fcaf45;
+            --background-color: #fafafa;
+            --card-background: #ffffff;
+            --text-color: #262626;
+            --text-secondary: #8e8e8e;
+            --border-color: #dbdbdb;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --border-radius: 8px;
+            --border-radius-small: 4px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Variables */
+        .dark-mode {
+            --background-color: #000000;
+            --card-background: #1a1a1a;
+            --text-color: #ffffff;
+            --text-secondary: #a8a8a8;
+            --border-color: #262626;
+            --shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+            --shadow-hover: 0 4px 12px rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            transition: var(--transition);
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-background);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .dark-mode-toggle:hover {
+            background: var(--background-color);
+        }
+
+        /* Search Section */
+        .search-section {
+            max-width: 614px;
+            margin: 24px auto;
+            padding: 0 20px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 8px;
+            background: var(--card-background);
+            padding: 8px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: var(--background-color);
+            color: var(--text-color);
+            border-radius: var(--border-radius-small);
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-button {
+            padding: 8px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .search-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Main Feed */
+        .feed-container {
+            max-width: 614px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Post Card */
+        .post-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+
+        .post-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Post Header */
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .username {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .username:hover {
+            text-decoration: underline;
+        }
+
+        .post-date {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .post-options {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Post Content */
+        .post-content {
+            padding: 0 16px 16px;
+        }
+
+        .post-text {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+
+        .post-image {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: cover;
+            border-radius: var(--border-radius-small);
+            margin-bottom: 12px;
+        }
+
+        /* Post Actions */
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 0;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .like-btn {
+            color: var(--secondary-color);
+        }
+
+        .like-btn:hover {
+            color: var(--primary-light);
+        }
+
+        .comment-btn {
+            color: var(--text-secondary);
+        }
+
+        .like-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Empty State */
+        .no-posts {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        .no-posts-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .no-posts-text {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 16px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .search-section,
+            .feed-container {
+                padding: 0 16px;
+            }
+            
+            .post-card {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .post-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">Code Alpha - social app</a>
+            <div class="header-actions">
+                <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <form class="search-form" method="GET" action="{% url 'search_users' %}">
+            <input type="text" name="q" class="search-input" placeholder="Search users...">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+
+    <!-- Feed Container -->
+    <div class="feed-container">
+        {% for post in posts %}
+        <article class="post-card">
+            <!-- Post Header -->
+            <div class="post-header">
+                <div class="user-avatar">
+                    {{ post.user.username|first|upper }}
+                </div>
+                <div class="user-info">
+                    <a href="{% url 'profile' post.user.username %}" class="username">
+                        {{ post.user.username }}
+                    </a>
+                    <div class="post-date">{{ post.created_at|date:"d M Y H:i" }}</div>
+                </div>
+                <div class="post-options">⋯</div>
+            </div>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <p class="post-text">{{ post.content }}</p>
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post image" class="post-image">
+                {% endif %}
+            </div>
+
+            <!-- Post Actions -->
+            <div class="post-actions">
+                <div class="action-buttons">
+                    <a href="{% url 'like_post' post.id %}" class="action-btn like-btn">
+                        ❤️ {{ post.likes.count }}
+                    </a>
+                    <a href="{% url 'post_detail' post.id %}" class="action-btn comment-btn">
+                        💬 Comments
+                    </a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div class="no-posts">
+            <div class="no-posts-icon">📱</div>
+            <p class="no-posts-text">No posts yet. Start sharing your moments!</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const toggle = document.querySelector('.dark-mode-toggle');
+            toggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        // Add smooth scrolling
+        document.addEventListener('DOMContentLoaded', function() {
+            const posts = document.querySelectorAll('.post-card');
+            posts.forEach((post, index) => {
+                post.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

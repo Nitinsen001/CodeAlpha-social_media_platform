@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Alpha - Social App</title>
+    <style>
+        :root {
+            --gradient-primary: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            --glass-light: rgba(255, 255, 255, 0.95);
+            --glass-dark: rgba(26, 26, 46, 0.95);
+            --border-light: rgba(255, 255, 255, 0.2);
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --text-primary: #262626;
+            --text-secondary: #8e8e8e;
+            --border-color: #dbdbdb;
+            --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass-light);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 12px 0;
+            transition: var(--transition);
+        }
+
+        .dark-mode .header {
+            background: var(--glass-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .header-content {
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        /* Improved Search Bar */
+        .search-bar {
+            flex: 1;
+            max-width: 268px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 10px 8px 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #efefef;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: #a8a8a8;
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--text-primary);
+        }
+
+        /* Header Buttons with Animations */
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 20px;
+            position: relative;
+        }
+
+        .header-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Specific button animations */
+        .home-btn:hover {
+            color: #3897f0;
+            animation: bounce 0.8s ease infinite;
+        }
+
+        .search-btn:hover {
+            color: #38c1f0;
+            animation: pulse 1s ease infinite;
+        }
+
+        .add-btn:hover {
+            color: #f05788;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .profile-btn:hover .profile-icon {
+            transform: scale(1.1);
+            box-shadow: 0 2px 10px rgba(188, 24, 136, 0.4);
+        }
+
+        /* Profile Icon */
+        .profile-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            --text-primary: #f5f5f5;
+            --text-secondary: #a8a8a8;
+            --border-color: #363636;
+        }
+
+        .dark-mode .search-input {
+            background: #262626;
+            color: #f5f5f5;
+            border-color: #363636;
+        }
+
+        .dark-mode .search-input:focus {
+            background: #000;
+            border-color: #737373;
+        }
+
+        .dark-mode .header-btn {
+            color: #f5f5f5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-bar {
+                display: none;
+            }
+            
+            .header-content {
+                padding: 0 15px;
+            }
+            
+            .header-actions {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 20px;
+            }
+            
+            .header-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+            
+            .profile-icon {
+                width: 22px;
+                height: 22px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="{% url 'post_list' %}" class="logo">Code Alpha - social app</a>
+            
+            <div class="search-bar">
+                <form method="GET" action="{% url 'search_users' %}">
+                    <input 
+                        class="search-input" 
+                        type="text" 
+                        name="q" 
+                        placeholder="Search" 
+                        aria-label="Search users"
+                    />
+                    <span class="search-icon">🔍</span>
+                </form>
+            </div>
+
+            <div class="header-actions">
+                {% if request.user.is_authenticated %}
+                    <button class="header-btn home-btn" onclick="window.location.href='{% url 'post_list' %}'">🏠</button>
+                    <button class="header-btn search-btn" onclick="window.location.href='{% url 'global_feed' %}'">🔍</button>
+                    <button class="header-btn add-btn" onclick="window.location.href='{% url 'create_post' %}'">➕</button>
+                    <button class="header-btn profile-btn" onclick="window.location.href='{% url 'profile' request.user.username %}'">
+                        <div class="profile-icon">
+                            {{ request.user.username|first|upper }}
+                        </div>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <script>
+        // Dark Mode Toggle (if needed)
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // Initialize dark mode if previously set
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>
